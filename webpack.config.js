@@ -1,9 +1,8 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
 module.exports = {
     entry: {
-        index: path.resolve(__dirname, "src", "interscroller.js")
+        index: path.resolve(__dirname, "src", "interscroller.js"),
     },
     module: {
         rules: [
@@ -14,12 +13,6 @@ module.exports = {
             }
         ]
     },
-    mode: 'development',
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "src", "interscroller.html")
-        })
-    ],
     output: {
         library: 'dist',
         libraryTarget: 'umd',
