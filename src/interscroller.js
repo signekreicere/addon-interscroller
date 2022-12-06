@@ -40,6 +40,23 @@
             let wrapperId = String(config.container);
             let elementToWrap = top.document.querySelector(wrapperId);   // select element with set value in index
 
+            window.addEventListener("stpdRendered", function (e) {
+                var adName =  e.detail.name;
+                var adWinner = e.detail.winner;
+                var elementToWrapChild = top.document.querySelector(wrapperId + " > div");
+                var cleanEventName = adName.split('/')[2];
+                var cleanContainerName = config.container.split('\"')[1];
+                var startChar = String(elementToWrapChild.id).split('/', 2).join('/').length;
+                var endChar = String(elementToWrapChild.id).split('_', 7).join('_').length;
+                var cleanContainerChildName = String(elementToWrapChild.id).slice(startChar + 1, endChar,);
+
+                if ( (cleanEventName == cleanContainerChildName) && (adWinner != "passback") ){
+                    repositionAd();
+                    addTitle();
+                    addWrapper();
+                }
+            });
+
             // Wrapper element creation
             let scroller = document.createElement('div');
             let scrollerIn = document.createElement('div');
@@ -62,26 +79,35 @@
             scroller.appendChild(scrollerWrapper);
 
             // Wrap ad in title tags
-            if (config.showTitle) {
-                let scrollerTitleStart = document.createElement('div');
-                let scrollerTitleEnd = document.createElement('div');
-                scrollerTitleStart.setAttribute("class", "stpd-interscroller-title");
-                scrollerTitleEnd.setAttribute("class", "stpd-interscroller-title");
-                scrollerTitleStart.innerHTML = scrollerTitleEnd.innerHTML = String(config.titleText);
-                scroller.prepend(scrollerTitleStart);
-                scroller.append(scrollerTitleEnd);
+            let addTitle = function () {
+                var title = top.document.querySelector('.stpd-interscroller-title') // check if title already exists
+                if (!title) {
+                    if ( (config.showTitle) && (elementToWrap.clientHeight > 0) ) {
+                        let scrollerTitleStart = document.createElement('div');
+                        let scrollerTitleEnd = document.createElement('div');
+                        scrollerTitleStart.setAttribute("class", "stpd-interscroller-title");
+                        scrollerTitleEnd.setAttribute("class", "stpd-interscroller-title");
+                        scrollerTitleStart.innerHTML = scrollerTitleEnd.innerHTML = String(config.titleText);
+                        scroller.prepend(scrollerTitleStart);
+                        scroller.append(scrollerTitleEnd);
 
-                let scrollerTitle = top.document.querySelectorAll('.stpd-interscroller-title');
-                scrollerTitle.forEach((adTitle) => {
-                    adTitle.style.cssText += "background: " + config.titleBackground + "; color: " + config.titleColor + "; width: " + wrapperWidth + "; margin: auto; position: relative; font-size: 12px; text-align: center; height: 18px;";
-                });
+                        let scrollerTitle = top.document.querySelectorAll('.stpd-interscroller-title');
+                        scrollerTitle.forEach((adTitle) => {
+                            adTitle.style.cssText += "background: " + config.titleBackground + "; color: " + config.titleColor + "; width: " + wrapperWidth + "; margin: auto; position: relative; font-size: 12px; text-align: center; height: 18px;";
+                        });
+                    }
+                }
             }
 
             // Default css for wrapper
-            scroller.style.cssText += "position: relative; padding: 0; overflow: hidden;"
-            scrollerWrapper.style.cssText += "position: relative; width: " + wrapperWidth + "; height: " + wrapperHeight + "px; margin: auto;"
-            scrollerInWrapper.style.cssText += "position: absolute; width: " + wrapperWidth + "; height: " + wrapperHeight + "px; clip: rect(auto, auto, auto, auto);"
-            scrollerIn.style.cssText += "position: fixed; max-width: 100%; top: 0;"
+            let addWrapper = function() {
+                if (elementToWrap.clientHeight > 0) {
+                    scroller.style.cssText += "position: relative; padding: 0; overflow: hidden;"
+                    scrollerWrapper.style.cssText += "position: relative; width: " + wrapperWidth + "; height: " + wrapperHeight + "px; margin: auto;"
+                    scrollerInWrapper.style.cssText += "position: absolute; width: " + wrapperWidth + "; height: " + wrapperHeight + "px; clip: rect(auto, auto, auto, auto);"
+                    scrollerIn.style.cssText += "position: fixed; max-width: 100%; top: 0;"
+                }
+            }
 
             // Override margins
             if (config.overrideParentWidth){
@@ -127,9 +153,14 @@
                 }
             }
 
+            setTimeout(function () {
+                repositionAd();
+            }, 1500);
+            window.addEventListener("load", repositionAd);
             window.addEventListener("scroll", repositionAd);
-            window.addEventListener("load",  repositionAd);
-            window.addEventListener("resize",  repositionAd);
+            window.addEventListener("resize", repositionAd);
+            window.addEventListener("load",  () => { addTitle(), addWrapper() });
+            window.addEventListener("resize",  () => { addTitle(), addWrapper() });
         };
 
         if (stpdInterscroller.que.length > 0) {
