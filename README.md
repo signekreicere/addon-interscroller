@@ -3,7 +3,7 @@
 - Install with npm OR
   `npm i addon-interscroller`
 - Add hosted code link in <head>
-  `https://cdn.jsdelivr.net/npm/addon-interscroller@1.0.1/dist/interscroller.js`
+  `https://cdn.jsdelivr.net/npm/addon-interscroller@1.0.2/dist/interscroller.js`
 # Usage
 Addon interscroller wraps element into scrollable box.
 - configure parameters / call function
