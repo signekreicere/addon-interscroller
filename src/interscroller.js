@@ -51,9 +51,9 @@
                 var cleanContainerChildName = String(elementToWrapChild.id).slice(startChar + 1, endChar,);
 
                 if ( (cleanEventName == cleanContainerChildName) && (adWinner != "passback") ){
-                    repositionAd();
-                    addTitle();
                     addWrapper();
+                    addTitle();
+                    repositionAd();
                 }
             });
 
@@ -153,14 +153,11 @@
                 }
             }
 
-            setTimeout(function () {
-                repositionAd();
-            }, 1500);
+            window.addEventListener("load",  () => { addTitle(), addWrapper() });
+            window.addEventListener("resize",  () => { addTitle(), addWrapper() });
             window.addEventListener("load", repositionAd);
             window.addEventListener("scroll", repositionAd);
             window.addEventListener("resize", repositionAd);
-            window.addEventListener("load",  () => { addTitle(), addWrapper() });
-            window.addEventListener("resize",  () => { addTitle(), addWrapper() });
         };
 
         if (stpdInterscroller.que.length > 0) {

@@ -1,6 +1,6 @@
 {
   "name": "addon-interscroller",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Element Interscroller Wrapper",
   "main": "lib/interscroller.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "react-dom": "^18.2.0"
   },
   "directories": {
-    "lib": "lib"
+    "test": "test"
   },
   "repository": {
     "type": "git",
