@@ -3,7 +3,7 @@
 - Install with npm OR
   `npm i addon-interscroller`
 - Add hosted code link in <head>
-  `https://cdn.jsdelivr.net/npm/addon-interscroller@1.0.2/dist/interscroller.js`
+  `https://cdn.jsdelivr.net/npm/addon-interscroller@1.0.3/dist/interscroller.js`
 # Usage
 Addon interscroller wraps element into scrollable box.
 - configure parameters / call function
@@ -13,7 +13,7 @@ Addon interscroller wraps element into scrollable box.
         stpdInterscroller.que.push(function() {
             stpdInterscroller.setConfig({
                 container: 'img[id="adElementId"]',     // element + it's id or class
-                height: 250,                            // container height (px); will override to max element height if set bigger than element
+                height: 250,                            // container height (px)
                 width: 0,                               // container width (px) / 0 - for 100%; will override to 100% if screen smaller than setting
                 showTitle: true,                        // show Ad title (true/false)
                 titleText: 'Advertisement',             // title name
