@@ -53,6 +53,7 @@
                 if ( (cleanEventName == cleanContainerChildName) && (adWinner != "passback") ){
                     addWrapper();
                     addTitle();
+                    overrideMargins();
                     repositionAd();
                 }
             });
@@ -110,10 +111,12 @@
             }
 
             // Override margins
-            if (config.overrideParentWidth){
-                let marginLeft = scroller.getBoundingClientRect().left
-                let marginRight = scroller.getBoundingClientRect().right - window.innerWidth
-                scroller.style.cssText += "margin-left: -" + marginLeft + "px; margin-right: " + marginRight + "px;";
+            let overrideMargins = function() {
+                if (config.overrideParentWidth) {
+                    let marginLeft = scroller.getBoundingClientRect().left
+                    let marginRight = scroller.getBoundingClientRect().right - window.innerWidth
+                    scroller.style.cssText += "margin-left: -" + marginLeft + "px; margin-right: " + marginRight + "px;";
+                }
             }
 
             // Scrollability
@@ -121,21 +124,17 @@
                 // Horizontal reposition
                 let margCalc = (scrollerWrapper.clientWidth - scrollerIn.clientWidth) / 2;
                 scrollerIn.style.cssText += "margin-left: " + margCalc + "px;";
-
-                //Wrapper height override if wrapped element smaller - unless wrapped element bigger than screen height
-                if ( (elementToWrap.clientHeight < wrapperHeight) && (window.innerHeight > elementToWrap.clientHeight) ) {
-                    scrollerWrapper.style.cssText += "height: " + elementToWrap.clientHeight + "px";
-                    scrollerInWrapper.style.cssText += "height: " + elementToWrap.clientHeight + "px";
-                }
-
                 scrollerIn.style.height = elementToWrap.clientHeight + "px";        //stpd-interscroller-in"
 
-                let windowHeight = window.innerHeight;
+                let windowHeight = window.outerHeight;
                 let outWrapHeight = scrollerWrapper.clientHeight;                   //stpd-interscroller-wrapper
                 let outWrapTop = scrollerWrapper.getBoundingClientRect().top;
                 let innerElHeight = elementToWrap.clientHeight;
 
-                if (elementToWrap.clientHeight < windowHeight){
+                if ( (elementToWrap.clientHeight < wrapperHeight) && (elementToWrap.clientHeight < windowHeight ) ) {
+                    scrollerIn.style.cssText += "top: " + ((windowHeight - innerElHeight) / 2 ) + "px;";
+                }
+                else if (elementToWrap.clientHeight < windowHeight){
                     if ((outWrapTop + outWrapHeight) > windowHeight) {
                         scrollerIn.style.bottom = "0";
                         scrollerIn.style.top = "unset";
@@ -153,8 +152,8 @@
                 }
             }
 
-            window.addEventListener("load",  () => { addTitle(), addWrapper() });
-            window.addEventListener("resize",  () => { addTitle(), addWrapper() });
+            window.addEventListener("load",  () => { addTitle(), addWrapper(), overrideMargins() });
+            window.addEventListener("resize",  () => { addTitle(), addWrapper(), overrideMargins() });
             window.addEventListener("load", repositionAd);
             window.addEventListener("scroll", repositionAd);
             window.addEventListener("resize", repositionAd);
