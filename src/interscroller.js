@@ -50,11 +50,14 @@
                 var endChar = String(elementToWrapChild.id).split('_', 7).join('_').length;
                 var cleanContainerChildName = String(elementToWrapChild.id).slice(startChar + 1, endChar,);
 
+                console.log(e); // debbug ad values
+
                 if ( (cleanEventName == cleanContainerChildName) && (adWinner != "passback") ){
                     addWrapper();
                     addTitle();
                     overrideMargins();
                     repositionAd();
+                    repositionAdLog();  // debbug fnct values
                 }
             });
 
@@ -103,10 +106,11 @@
             // Default css for wrapper
             let addWrapper = function() {
                 if (elementToWrap.clientHeight > 0) {
-                    scroller.style.cssText += "position: relative; padding: 0; overflow: hidden;"
+                    scroller.style.cssText += "position: relative; padding: 0; overflow: hidden; min-width: 100%;"
                     scrollerWrapper.style.cssText += "position: relative; width: " + wrapperWidth + "; height: " + wrapperHeight + "px; margin: auto;"
                     scrollerInWrapper.style.cssText += "position: absolute; width: " + wrapperWidth + "; height: " + wrapperHeight + "px; clip: rect(auto, auto, auto, auto);"
                     scrollerIn.style.cssText += "position: fixed; max-width: 100%; top: 0;"
+                    console.log("Interscroller: addWrapperFnct::: wrapperWidth: " + wrapperWidth + "; wrapperHeight: " + wrapperHeight);   // debbug fnct values
                 }
             }
 
@@ -116,6 +120,7 @@
                     let marginLeft = scroller.getBoundingClientRect().left
                     let marginRight = scroller.getBoundingClientRect().right - window.innerWidth
                     scroller.style.cssText += "margin-left: -" + marginLeft + "px; margin-right: " + marginRight + "px;";
+                    console.log("Interscroller: addWrapperFnct::: overrideMargins: marginLeft: " + marginLeft + "; marginRight: " + marginRight);   // debbug fnct values
                 }
             }
 
@@ -151,9 +156,12 @@
                     scrollerIn.style.bottom = "unset";
                 }
             }
+            let repositionAdLog = function() {
+                console.log("Interscroller: before:repositionAdFnct::: scrollerWrapper.clientWidth: " + scrollerWrapper.clientWidth + "; scrollerIn.clientWidth: " + scrollerIn.clientWidth + "; margCalc: " + ((scrollerWrapper.clientWidth - scrollerIn.clientWidth) / 2));   // debbug fnct values
+            }
 
-            window.addEventListener("load",  () => { addTitle(), addWrapper(), overrideMargins() });
-            window.addEventListener("resize",  () => { addTitle(), addWrapper(), overrideMargins() });
+            window.addEventListener("load",  () => { addTitle(), addWrapper(), overrideMargins(), repositionAdLog() });
+            window.addEventListener("resize",  () => { addTitle(), addWrapper(), overrideMargins(), repositionAdLog() });
             window.addEventListener("load", repositionAd);
             window.addEventListener("scroll", repositionAd);
             window.addEventListener("resize", repositionAd);
