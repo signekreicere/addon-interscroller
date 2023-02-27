@@ -130,6 +130,7 @@
                 let margCalc = (scrollerWrapper.clientWidth - scrollerIn.clientWidth) / 2;
                 scrollerIn.style.cssText += "margin-left: " + margCalc + "px;";
                 scrollerIn.style.height = elementToWrap.clientHeight + "px";        //stpd-interscroller-in"
+                elementToWrap.style.cssText += "text-align: center;";
 
                 let windowHeight = window.outerHeight;
                 let outWrapHeight = scrollerWrapper.clientHeight;                   //stpd-interscroller-wrapper
@@ -163,7 +164,7 @@
             window.addEventListener("load",  () => { addTitle(), addWrapper(), overrideMargins(), repositionAdLog() });
             window.addEventListener("resize",  () => { addTitle(), addWrapper(), overrideMargins(), repositionAdLog() });
             window.addEventListener("load", repositionAd);
-            window.addEventListener("scroll", repositionAd);
+            window.addEventListener("scroll",  () => { repositionAd(), addWrapper() });
             window.addEventListener("resize", repositionAd);
         };
 
